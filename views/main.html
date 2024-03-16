@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outfit Recommendation Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Additional CSS if needed */
+    body {
+      display: grid;
+      grid-template-columns: 200px 1fr; /* Sidebar width and main content */
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      position: relative; /* Set body as relative */
+      min-height: 100vh; /* Ensure body covers the viewport height */
+    
+    }
+    
+  .button-write {
+  position: fixed; /* Fixed positioning */
+  bottom: 200px; /* Adjust bottom distance */
+  right: 80px; /* Adjust right distance */
+  z-index: 999; /* Ensure it's above other content */
+}
+    .sidebar {
+      height: 100%; /* 변경된 부분 */
+      background-color: #374151; /* Dark gray for sidebar */
+      color: white;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .sidebar a:hover {
+      color: #60A5FA; /* Change color on hover */
+    }
+    .container {
+      padding: 1rem;
+    }
+    .grid-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 그리드 컬럼 설정 */
+      row-gap: 25px; /* 세로 방향 간격을 10px로 지정합니다. */
+      column-gap: 130px; /* 가로 방향 간격을 10px로 지정합니다. */
+      /* 나머지 스타일은 여기에 유지합니다. */
+    }
+    .grid-item {
+      background-color: #f3f4f6; /* Light gray for light theme */
+      display: flex;
+      flex-direction: column; /* Stack content vertically */
+      border: 1px solid #e5e7eb; /* Slightly darker gray for border */
+      padding: 1rem; /* Add padding */
+      text-align: center; /* Center text */
+      width: 300px; /* 그리드 아이템의 너비를 조정합니다. */
+      height: 300px; /* 그리드 아이템의 높이를 조정합니다. */
+      justify-content: center; /* 수평 가운데 정렬 */
+      align-items: center; /* 수직 가운데 정렬 */
+    }
+    .grid-item img {
+      margin-top: 1rem; /* Add some margin between title and image */
+      max-width: 100%; /* Ensure image doesn't overflow */
+      height: auto; /* Maintain aspect ratio */
+    }
+    .grid-item div {
+      font-size: 1.3rem; /* Increase title font size */
+      font-weight: bold; /* Make title bold */
+    }
+    .weather-info {
+      background-color: #f0f9ff; /* 하늘색 배경 */
+      border-left: 5px solid #60A5FA; /* 왼쪽에 강조선 */
+      padding: 1rem; /* 패딩 */
+      margin-bottom: 2rem; /* 아래쪽 마진 */
+      border-radius: 5px; /* 테두리 둥글게 */
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+  <div class="sidebar">
+    <!-- Sidebar content goes here -->
+    <h2 class="text-2xl font-semibold mb-4"><a href="/main">MAIN</a></h2>
+    <ul>
+      <li><a href="/main/high">28°C~</a></li>
+      <li><a href="/main/27-23">27~23°C</a></li>
+      <li><a href="/main/22-20">22~20°C</a></li>
+      <li><a href="/main/19-17">19~17°C</a></li>
+      <li><a href="/main/16-12">16~12°C</a></li>
+      <li><a href="/main/11-9">11~9°C</a></li>
+      <li><a href="/main/8-5">8~5°C</a></li>
+      <li><a href="/main/low">~4°C</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <header class="flex justify-between items-center mb-8">
+      <h1 class="text-xl font-semibold">Outfit Recommendation</h1>
+      <div>
+          
+        {% if LoggedIn %}
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/auth/logout'">Logout</button>
+        {% else %}
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="location.href='/login'">Login</button>
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/join'">Sign Up</button>
+        {% endif %}
+        
+      </div>
+    </header>
+
+    <main>
+
+      <div class="weather-info mb-8 p-4 rounded shadow-lg bg-blue-100">
+        <h2 class="text-lg font-semibold">Current Weather</h2>
+        <p id="location">Location: {{location}}</p>
+        <p id="temperature">Temperature: {{currentTemp}}°C</p>
+        <p id="weather">Weather: {{weather}}</p>
+      </div>
+      
+      <div class="grid-box">
+        {% for result in results %}
+          <div class="grid-item">
+            <div>{{ result.title }}</div>
+            
+            {% if result.img1 %}
+            <a href="/detailpost/{{result.postnum}}" style="display: inline-block; width: 200px; height: 300px; overflow: hidden;">
+              <img src="/{{result.img1}}" alt="Photo Review 1" style="width: 100%; height: 100%; object-fit: cover;">
+          </a>
+            {% else %}
+            <a href="/detailpost/{{result.postnum}}">
+              <img src="https://via.placeholder.com/100" alt="Default Image" class="h-24">
+            </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <button class="button-write bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="location.href='/write'">글쓰기</button>
+
+
+    </main>
+  </div>
+  
+
+  <script>
+    (function() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+    
+          // 서버의 /getWeather 라우트로 POST 요청을 보냅니다.
+          fetch('/getWeather', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              latitude: latitude,
+              longitude: longitude,
+            }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Weather data from server:', data);
+          })
+          .catch(error => {
+            console.error('Error fetching weather from server:', error);
+          });
+        });
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+      }
+    })();
+    
+  </script>
+</body>
+</html>
