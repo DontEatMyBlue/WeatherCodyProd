@@ -4,6 +4,9 @@ const { isLoggedIn, isNotLoggedIn } = require('../middlewares');
 
 const router = express.Router();
 
+router.get('/',(req,res)=>{
+    res.redirect('/main')
+})
 router.get('/main/:temp',renderMain);
 router.get('/main/',renderMain);
 router.get('/join',isNotLoggedIn,(req,res)=>{

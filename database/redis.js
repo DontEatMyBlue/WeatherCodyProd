@@ -1,7 +1,7 @@
 const redis = require('redis');
 
 const client = redis.createClient({
-  url: 'redis://test-ro.vgco7l.ng.0001.apn2.cache.amazonaws.com:6379'
+  url: process.env.AWS_REDIS
 });
 client.connect();
 

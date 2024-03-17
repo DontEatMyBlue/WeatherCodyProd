@@ -19,7 +19,7 @@ router.post('/getWeather', async (req, res) => {
       res.cookie('currentTemp',currentTemp);
       res.cookie('weather',weather);
 
-      res.redirect('/main');
+      res.redirect('/');
     } catch (error) {
       console.log(error);
       res.status(500).send('Server error when fetching weather data');

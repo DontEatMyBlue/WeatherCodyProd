@@ -24,7 +24,7 @@ nunjucks.configure('views',{
 });
 
 app.use(cors({
-    origin: 'http://localhost:8001', // 클라이언트의 실제 도메인으로 변경
+    origin: 'http://weathercody-env-1.eba-vjumvjna.ap-northeast-2.elasticbeanstalk.com/', // 클라이언트의 실제 도메인으로 변경
     credentials: true
   }));
 
