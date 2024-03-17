@@ -1,18 +1,20 @@
+const { S3 } = require('aws-sdk');
 const mysqlPool = require('../database/mysql_pool');
 
 exports.postWrite = (req,res,next)=>{
     let img1 = null;
     let img2 = null;
     let img3 = null;
+    const S3Path = "https://codyweather.s3.ap-northeast-2.amazonaws.com/";
 
     if (req.files.image1 && req.files.image1.length > 0) {
-        img1 = req.files.image1[0].key;
+        img1 = S3Path+req.files.image1[0].key;
     }
     if (req.files.image2 && req.files.image2.length > 0) {
-        img2 = req.files.image2[0].key;
+        img2 = S3Path+req.files.image2[0].key;
     }
     if (req.files.image3 && req.files.image3.length > 0) {
-        img3 = req.files.image3[0].key;
+        img3 = S3Path+req.files.image3[0].key;
     }
 
     const {title,content,temp,height,weight,gender} = req.body;
@@ -36,6 +38,7 @@ exports.postEdit = (req,res,next)=>{
     let img1 = null;
     let img2 = null;
     let img3 = null;
+    const S3Path = "https://codyweather.s3.ap-northeast-2.amazonaws.com/";
     const postnum = req.params.postnum;
     let sql = 'Update post set title=?,content=?,temp=?,height=?,weight=?,gender=?';
     const {title,content,temp,height,weight,gender} = req.body;
@@ -43,17 +46,17 @@ exports.postEdit = (req,res,next)=>{
 
 
     if (req.files.image1 && req.files.image1.length > 0) {
-        img1 = req.files.image1[0].key;
+        img1 = S3Path+req.files.image1[0].key;
         sql+=',img1=?'
         params.push(img1);
     }
     if (req.files.image2 && req.files.image2.length > 0) {
-        img2 = req.files.image2[0].key;
+        img2 = S3Path+req.files.image2[0].key;
         sql+=',img2=?'
         params.push(img2);
     }
     if (req.files.image3 && req.files.image3.length > 0) {
-        img3 = req.files.image3[0].key;
+        img3 =S3Path+req.files.image3[0].key;
         sql=',img3=?'
         params.push(img3);
     }
