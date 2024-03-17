@@ -6,13 +6,13 @@ exports.postWrite = (req,res,next)=>{
     let img3 = null;
 
     if (req.files.image1 && req.files.image1.length > 0) {
-        img1 = req.files.image1[0].filename;
+        img1 = req.files.image1[0].key;
     }
     if (req.files.image2 && req.files.image2.length > 0) {
-        img2 = req.files.image2[0].filename;
+        img2 = req.files.image2[0].key;
     }
     if (req.files.image3 && req.files.image3.length > 0) {
-        img3 = req.files.image3[0].filename;
+        img3 = req.files.image3[0].key;
     }
 
     const {title,content,temp,height,weight,gender} = req.body;
@@ -43,17 +43,17 @@ exports.postEdit = (req,res,next)=>{
 
 
     if (req.files.image1 && req.files.image1.length > 0) {
-        img1 = req.files.image1[0].filename;
+        img1 = req.files.image1[0].key;
         sql+=',img1=?'
         params.push(img1);
     }
     if (req.files.image2 && req.files.image2.length > 0) {
-        img2 = req.files.image2[0].filename;
+        img2 = req.files.image2[0].key;
         sql+=',img2=?'
         params.push(img2);
     }
     if (req.files.image3 && req.files.image3.length > 0) {
-        img3 = req.files.image3[0].filename;
+        img3 = req.files.image3[0].key;
         sql=',img3=?'
         params.push(img3);
     }

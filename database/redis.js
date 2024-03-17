@@ -1,8 +1,7 @@
 const redis = require('redis');
 
 const client = redis.createClient({
-    host: 'localhost',
-    port: 6379
+  url: 'redis://test-ro.vgco7l.ng.0001.apn2.cache.amazonaws.com:6379'
 });
 client.connect();
 
