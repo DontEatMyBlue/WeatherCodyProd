@@ -63,19 +63,19 @@
         <label for="photo" class="block text-sm font-medium text-gray-700">Photo Attachment</label>
         <input type="file" name="image1" id="file1" accept="image/*" onchange="displayImage('file1', 'image1Preview')">
         {%if result.img1%}
-        <label for="file1"><img id="image1Preview" src="../{{result.img1}}" alt="Image 1"></label>
+        <label for="file1"><img id="image1Preview" src="{{result.img1}}" alt="Image 1"></label>
         {%else%}
         <label for="file1"><img id="image1Preview" src="https://via.placeholder.com/100" alt="Image 1"></label>
         {%endif%}
         <input type="file" name="image2" id="file2" accept="image/*" onchange="displayImage('file2', 'image2Preview')">
         {%if result.img2%}
-        <label for="file2"><img id="image2Preview" src="../{{result.img2}}" alt="Image 2"></label>
+        <label for="file2"><img id="image2Preview" src="{{result.img2}}" alt="Image 2"></label>
         {%else%}
         <label for="file2"><img id="image2Preview" src="https://via.placeholder.com/100" alt="Image 2"></label>
         {%endif%}
         <input type="file" name="image3" id="file3" accept="image/*" onchange="displayImage('file3', 'image3Preview')">
         {%if result.img3%}
-        <label for="file3"><img id="image3Preview" src="../{{result.img3}}" alt="Image 3"></label>
+        <label for="file3"><img id="image3Preview" src="{{result.img3}}" alt="Image 3"></label>
         {%else%}
         <label for="file3"><img id="image3Preview" src="https://via.placeholder.com/100" alt="Image 3"></label>
         {%endif%}

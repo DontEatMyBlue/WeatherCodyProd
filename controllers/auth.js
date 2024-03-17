@@ -20,7 +20,6 @@ exports.join = (req,res,next)=>{
             connection.release();
         })
     }catch(error){
-        console.log(error);
         return next(error);
     }
 }

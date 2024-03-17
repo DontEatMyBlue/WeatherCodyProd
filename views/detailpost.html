@@ -13,6 +13,16 @@
     justify-content: center;
     height: 80vh;
     margin: 0;
+    position: relative;
+  }
+  .main-page-link {
+    position: absolute;
+    top: 10px; /* Adjust this value to move the link down */
+    left: 10px; /* Adjust this value to move the link right */
+    text-decoration: none; /* Optional: Removes the underline from the link */
+    color: #007bff; /* Optional: Sets the link color */
+    font-family: 'Open Sans', sans-serif; /* Matches your body font */
+    font-weight: 600; /* Optional: Makes the font a bit bolder */
   }
   .grid-container {
     display: grid;
@@ -56,24 +66,25 @@
 </style>
 </head>
 <body class="bg-gray-50 font-sans">
+  <a href="/" class="main-page-link">Main</a>
 <div class="grid-container mx-auto">
   <div class="grid-item product-image">
-    <img id="mainProductImage" src="/{{result.img1}}" alt="Product Image" class="max-w-full h-auto">
+    <img id="mainProductImage" src="{{result.img1}}" alt="Product Image" class="max-w-full h-auto">
   </div>
   <div class="grid-item photo-review" onclick="changeProductImage(event)">
     <div class="flex space-x-2">
     {% if result.img1 %}
-      <img src="/{{result.img1}}" alt="Photo Review 1" class="h-24">
+      <img src="{{result.img1}}" alt="Photo Review 1" class="h-24">
     {% else %}
       <img src="https://via.placeholder.com/100" alt="Default Image" class="h-24">
     {% endif %}
     {% if result.img2 %}
-      <img src="/{{result.img2}}" alt="Photo Review 2" class="h-24">
+      <img src="{{result.img2}}" alt="Photo Review 2" class="h-24">
     {% else %}
       <img src="https://via.placeholder.com/100" alt="Default Image" class="h-24">
     {% endif %}
     {% if result.img2 %}
-      <img src="/{{result.img3}}" alt="Photo Review 3" class="h-24">
+      <img src="{{result.img3}}" alt="Photo Review 3" class="h-24">
     {% else %}
       <img src="https://via.placeholder.com/100" alt="Default Image" class="h-24">
     {% endif %}
