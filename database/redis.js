@@ -6,7 +6,6 @@ const client = redis.createClient({
 client.connect();
 
 
-// Redis 클라이언트 에러 처리
 client.on('error', (err) => {
     console.log('Redis Client Error', err);
 });
@@ -18,7 +17,7 @@ const setValue = async(key, TTL, value) => {
 const getValue = async (key) => {
     try {
         const value = await client.get(key);
-        return value; // 함수에서 값을 반환하도록 수정
+        return value; 
     } catch (err) {
         console.error('Get Error:', err);
     }
@@ -29,14 +28,14 @@ const keyExists = async (key) => {
     const reply = await client.exists(key);
     if (reply === 1) {
       console.log('Key exists.');
-      return true; // 키가 존재한다면 true 반환
+      return true; 
     } else {
       console.log('Key does not exist.');
-      return false; // 키가 존재하지 않는다면 false 반환
+      return false; 
     }
   } catch (err) {
     console.error(err);
-    return false; // 에러 발생 시 false 반환
+    return false; 
   }
 };
 

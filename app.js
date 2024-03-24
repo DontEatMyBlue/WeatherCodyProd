@@ -7,6 +7,8 @@ const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 const passport = require('passport');
 const cors = require('cors');
+const methodOverride = require('method-override');
+
 dotenv.config();
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
@@ -33,7 +35,8 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'uploads')));
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({extended:true}));
+app.use(methodOverride('_method'));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     resave:false,
