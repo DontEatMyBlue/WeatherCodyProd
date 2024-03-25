@@ -66,12 +66,38 @@ exports.postEdit = (req,res,next)=>{
         if(err){
             return res.status(500).json({error:'DB연동 문제 발생'})
         }
-        connection.query(sql,params,(err,results)=>{
+        connection.query(sql,params,async(err,results)=>{
             connection.release();
             if(err){
                 console.log(err);
             }
             console.log(results);
+            if(temp >= 28){
+                const exist = await keyExists('high');
+                if(exist){
+                    await deleteKey('high');
+                }
+            } else if(temp <= 4){
+                const exist = await keyExists('low');
+                if(exist){
+                    await deleteKey('low');
+                }
+            } else {
+                const getKey = await getAllKey();
+                deleteLoop : if(getKey){
+                    for(i=0;i<getKey.length;i++){
+                        parts = getKey[i].split('-');
+                        max = parseInt(parts[0]);
+                        min = parseInt(parts[1]);
+                        console.log(parts);
+                        if(max<=temp<=min){
+                            await deleteKey(getKey[i]);
+                            console.log("삭제 완료");
+                            break deleteLoop;
+                        }
+                    }
+                }
+            }
             res.redirect(`../../detailpost/${postnum}`);
         })
     })
@@ -79,17 +105,44 @@ exports.postEdit = (req,res,next)=>{
 
 exports.postDelete = (req,res,next)=>{
     const postnum = req.params.postnum;
+    const selectSql = 'select temp from post where postnum=?'
     const sql = 'delete from post where postnum = ?'
+    let temp;
        mysqlPool.getConnection((err,connection)=>{
         if(err){
             return res.status(500).json({error:'DB연동 문제 발생'})
         }
-        connection.query(sql,postnum,(err,results)=>{
+        connection.query(selectSql,postnum,(err,result)=>{
+            temp = result;
+        })
+        connection.query(sql,postnum,async(err,results)=>{
             connection.release();
-            if(err){
-                console.log(err);
+            if(temp >= 28){
+                const exist = await keyExists('high');
+                if(exist){
+                    await deleteKey('high');
+                }
+            } else if(temp <= 4){
+                const exist = await keyExists('low');
+                if(exist){
+                    await deleteKey('low');
+                }
+            } else {
+                const getKey = await getAllKey();
+                deleteLoop : if(getKey){
+                    for(i=0;i<getKey.length;i++){
+                        parts = getKey[i].split('-');
+                        max = parseInt(parts[0]);
+                        min = parseInt(parts[1]);
+                        console.log(parts);
+                        if(max<=temp<=min){
+                            await deleteKey(getKey[i]);
+                            console.log("delete문 삭제 완료");
+                            break deleteLoop;
+                        }
+                    }
+                }
             }
-            console.log(results);
             res.redirect('../../main');
         })
     })

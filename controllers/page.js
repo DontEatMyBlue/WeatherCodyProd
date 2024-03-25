@@ -108,9 +108,9 @@ exports.renderMain = (req, res, next) => {
                 req.params.temp !== 'low'
             ) {
                 [paramMax, paramMin] = req.params.temp.split('-');
-                const exist = await keyExists(paramMax);
+                const exist = await keyExists(req.params.temp);
                 if(exist){
-                    const value = await getValue(paramMax);
+                    const value = await getValue(req.params.temp);
                     res.send(value);
                     console.log("실행완료");
                 }
@@ -131,7 +131,7 @@ exports.renderMain = (req, res, next) => {
                                 results: results,
                             });
                       
-                            setValue(paramMax,3600,html);
+                            setValue(req.params.temp,3600,html);
                             res.send(html);
                         }
                         else {
