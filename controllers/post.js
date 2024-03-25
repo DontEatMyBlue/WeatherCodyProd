@@ -1,5 +1,6 @@
 const { S3 } = require('aws-sdk');
 const mysqlPool = require('../database/mysql_pool');
+const { keyExists, deleteKey, getAllKey } = require('../database/redis');
 
 exports.postWrite = (req,res,next)=>{
     let img1 = null;

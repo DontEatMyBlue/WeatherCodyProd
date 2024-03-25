@@ -51,4 +51,4 @@ const getAllKey = async()=>{
   }
 }
 
-module.exports = { setValue, getValue,keyExists };
+module.exports = { setValue, getValue,keyExists,deleteKey,getAllKey };
