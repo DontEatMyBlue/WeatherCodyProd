@@ -38,5 +38,17 @@ const keyExists = async (key) => {
     return false; 
   }
 };
+const deleteKey = async (key) => {
+  await client.del(key);
+};
+
+const getAllKey = async()=>{
+  try{
+    const value = await client.keys('*');
+    return value;
+  }catch(err){
+    console.log(err);
+  }
+}
 
 module.exports = { setValue, getValue,keyExists };
