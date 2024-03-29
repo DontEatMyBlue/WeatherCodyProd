@@ -2,6 +2,7 @@ const { S3 } = require('aws-sdk');
 const mysqlPool = require('../database/mysql_pool');
 const { keyExists, deleteKey, getAllKey } = require('../database/redis');
 
+//글쓰기
 exports.postWrite = (req,res,next)=>{
     let img1 = null;
     let img2 = null;
@@ -35,6 +36,7 @@ exports.postWrite = (req,res,next)=>{
     })
 }
 
+//게시글 수정
 exports.postEdit = (req,res,next)=>{
     let img1 = null;
     let img2 = null;
@@ -73,6 +75,7 @@ exports.postEdit = (req,res,next)=>{
                 console.log(err);
             }
             console.log(results);
+            //현재 수정하는 게시글의 기온이 레디스의 키 값으로 저장된 상태라면 삭제
             if(temp >= 28){
                 const exist = await keyExists('high');
                 if(exist){
@@ -104,6 +107,7 @@ exports.postEdit = (req,res,next)=>{
     })
 }
 
+//게시글 삭제
 exports.postDelete = (req,res,next)=>{
     const postnum = req.params.postnum;
     const selectSql = 'select temp from post where postnum=?'

@@ -3,6 +3,8 @@ const axios = require('axios');
 
 const router = express();
 
+//날씨API
+//클라이언트에서 위치정보를 받고 날씨정보를 쿠키에 저장
 router.post('/getWeather', async (req, res) => {
     const { latitude, longitude } = req.body;
     const apiKey = process.env.API_KEY;

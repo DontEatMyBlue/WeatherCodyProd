@@ -1,7 +1,7 @@
 const mysqlPool = require('../database/mysql_pool');
 const nunjucks = require('nunjucks');
 const { getValue, setValue, keyExists } = require('../database/redis');
-let ttt;
+
 exports.renderMain = (req, res, next) => {
     let max;
     let min; 
@@ -10,6 +10,7 @@ exports.renderMain = (req, res, next) => {
     let currentTemp = req.cookies.currentTemp;
     let location = req.cookies.location;
     let weather = req.cookies.weather;
+    //현재 기온에 따른 게시판 구간값을 max와 min에 저장
     if (currentTemp >= 28) {
         max = 'high';
     } else if (currentTemp >= 23) {
@@ -38,13 +39,14 @@ exports.renderMain = (req, res, next) => {
             return res.status(500).json({ error: 'DB연동 문제 발생' });
         }
         if (req.params.temp) {
+            //high 게시판일 경우 만약에 high라는 레디스 키 값(페이지 캐싱)을 가져온다
             if (req.params.temp == 'high') {
                 const exist = await keyExists('high');
                if(exist){
                 const value= await getValue('high');
                 res.send(value);
-                console.log('high레디스');
                }
+               //만약에 레디스의 키 값이 없을 경우
                else{
                 connection.query(
                     'select title,img1,postnum from post where temp >= 28',
@@ -53,6 +55,7 @@ exports.renderMain = (req, res, next) => {
                         if (err) {
                             console.log(err);
                         }
+                        //현재의 기온이 high 게시판의 기온과 같다면 레디스 페이지 캐시 저장
                         if(max=='high'){
                             console.log("여기 실행")
                             const html = nunjucks.render('sub.html',{
@@ -63,6 +66,7 @@ exports.renderMain = (req, res, next) => {
                             res.send(html);
                         }
                         else{
+                        //현재 기온과 다르다면 일반적인 render
                         res.render('sub', {
                             LoggedIn: req.isAuthenticated(),
                             results: results,
@@ -145,6 +149,7 @@ exports.renderMain = (req, res, next) => {
                 }
             }
         } else {
+            //메인페이지
             let testQuery;
             let testParam;
             if (max !== 'high' && min !== 'low') {
@@ -177,6 +182,7 @@ exports.renderMain = (req, res, next) => {
     });
 };
 
+//게시글 상세페이지
 exports.renderDetailPost = (req, res, next) => {
     let checkUser;
     const postnum = req.params.postnum;
@@ -192,6 +198,7 @@ exports.renderDetailPost = (req, res, next) => {
                 if (err) {
                     console.log(err);
                 }
+                //현재 게시글의 작성자가 맞으면 true반환
                 if (
                     req.user &&req.user.id == result[0].id
                 ) {
@@ -207,6 +214,7 @@ exports.renderDetailPost = (req, res, next) => {
     });
 };
 
+//게시글 수정페이지
 exports.renderEdit = (req, res, next) => {
     const postnum = req.params.postnum;
     mysqlPool.getConnection((err, connection) => {
