@@ -25,7 +25,7 @@ nunjucks.configure('views',{
 });
 
 app.use(cors({
-    origin: 'http://weathercody-env-1.eba-vjumvjna.ap-northeast-2.elasticbeanstalk.com/',
+    origin: 'http://Zz-env.eba-6fpg22rg.ap-northeast-2.elasticbeanstalk.com/',
     credentials: true
   }));
 
